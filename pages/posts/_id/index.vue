@@ -1,36 +1,47 @@
 <template>
-    <div class="single-post-page">
-        <section class="post">
-            <h1 class="post-title">{{ loadedPost.title}}</h1>
-            <div class="post-details">
-                <div class="post-detail">Last updated on {{loadedPost.updatedDate}}</div>
-                <div class="post-detail">Written by {{ loadedPost.author}}</div>
-            </div>
-            <p class="post-content">{{loadedPost.content}}</p>
-        </section>
-        <section class="post-feedback">
-            <p>
-                Let me know what you think about this post, send me mail on <a href="mailto:feedback@myblogpost">feedback@myblogpost</a>
-            </p>
-        </section>
-    </div>
+  <div class="single-post-page">
+    <section class="post">
+      <h1 class="post-title">{{ loadedPost.title }}</h1>
+      <div class="post-details">
+        <div class="post-detail">
+          Last updated on {{ loadedPost.updatedDate }}
+        </div>
+        <div class="post-detail">Written by {{ loadedPost.author }}</div>
+      </div>
+      <p class="post-content">{{ loadedPost.content }}</p>
+    </section>
+    <section class="post-feedback">
+      <p>
+        Let me know what you think about this post, send me mail on
+        <a href="mailto:feedback@myblogpost">feedback@myblogpost</a>
+      </p>
+    </section>
+  </div>
 </template>
 <script>
 export default {
-  asyncData(context, callback) {
-    setTimeout(() => {
-      callback(null, {
-        loadedPost: {
+  asyncData(context) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve({
+          loadedPost: {
             id: "1",
             author: "Arvin Waghmare",
             updatedDate: new Date(),
             title: `Amazing post! First (ID: ${context.route.params.id})`,
-            previewText: "Super amazing! thanks - First"
-          }
-      })
-    }, 1000)
-  }
-}
+            previewText: "Super amazing! thanks - First",
+          },
+        });
+      }, 1000);
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((e) => {
+      context.error(e);
+    });
+  },
+};
 </script>
 <style scoped>
 .single-post-page {
