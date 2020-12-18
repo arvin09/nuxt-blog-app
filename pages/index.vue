@@ -3,7 +3,7 @@
     <section class="intro">
       <h1>Get latest tech news!</h1>
     </section>
-    <PostList />
+    <PostList :posts="loadedPosts" />
   </div>
 </template>
 
@@ -11,8 +11,37 @@
 import PostList from "@/components/Posts/PostList";
 export default {
   components: {
-    PostList
+    PostList,
   },
+  asyncData(context, callback) {
+    setTimeout(() => {
+      callback(null, {
+        loadedPosts: [
+          {
+            id: "1",
+            title: "Amazing post! First",
+            previewText: "Super amazing! thanks - First",
+            thumbnail:
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4PzgGejsPxVgxwXSsWT3PXX3qB-D-ZTpApw&usqp=CAU",
+          },
+          {
+            id: "2",
+            title: "Amazing post! Second",
+            previewText: "Super amazing! thanks - Second",
+            thumbnail:
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4PzgGejsPxVgxwXSsWT3PXX3qB-D-ZTpApw&usqp=CAU",
+          },
+          {
+            id: "3",
+            title: "Amazing post! Third",
+            previewText: "Super amazing! thanks - Third",
+            thumbnail:
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4PzgGejsPxVgxwXSsWT3PXX3qB-D-ZTpApw&usqp=CAU",
+          },
+        ],
+      });
+    }, 500);
+  }
 };
 </script>
 
@@ -22,7 +51,7 @@ export default {
   position: relative;
   padding: 30px;
   box-sizing: border-box;
-  background-image: url('~assets/images/main-page-background.jpg');
+  background-image: url("~assets/images/main-page-background.jpg");
   background-position: center;
   background-size: cover;
 }
@@ -47,5 +76,4 @@ export default {
     font-size: 2rem;
   }
 }
-
 </style>
