@@ -1,5 +1,5 @@
 import Vuex from 'vuex';
-
+import axios from 'axios';
 const createStore = () => {
     return new Vuex.Store({
         state: {
@@ -8,38 +8,47 @@ const createStore = () => {
         mutations: {
             setPosts(state, posts) {
                 state.loadedPosts = posts;
+            },
+            addPost(state, post) {
+                state.loadedPosts.push(post);
+            },
+            editPost(state, editedPost) {
+                const postIndex = state.loadedPosts.findIndex(
+                    post => post.id === editedPost.id
+                )
+                state.loadedPosts[postIndex] = editedPost;
             }
         },
         actions: {
             nuxtServerInit(vuexContext, context) {
-                return new Promise((resolve, reject) => {
-                    setTimeout(() => {
-                        vuexContext.commit("setPosts", [
-                            {
-                              id: "1",
-                              title: "Amazing post! First",
-                              previewText: "Super amazing! thanks - First",
-                              thumbnail:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4PzgGejsPxVgxwXSsWT3PXX3qB-D-ZTpApw&usqp=CAU",
-                            },
-                            {
-                              id: "2",
-                              title: "Amazing post! Second",
-                              previewText: "Super amazing! thanks - Second",
-                              thumbnail:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4PzgGejsPxVgxwXSsWT3PXX3qB-D-ZTpApw&usqp=CAU",
-                            },
-                            {
-                              id: "3",
-                              title: "Amazing post! Third",
-                              previewText: "Super amazing! thanks - Third",
-                              thumbnail:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4PzgGejsPxVgxwXSsWT3PXX3qB-D-ZTpApw&usqp=CAU",
-                            },
-                        ]);
-                        resolve();
-                    },  1000);
-                });
+                return axios.get('https://nuxt-blog-9bc00-default-rtdb.firebaseio.com/posts.json')
+                .then(res => {
+                    const postsArray = [];
+                    for(const key in res.data) {
+                        postsArray.push({...res.data[key], id: key});
+                    }
+                    vuexContext.commit('setPosts', postsArray);
+                })
+                .catch(e => context.error(e));
             },
             setPosts(vuexContext, posts) {
                 vuexContext.commit('setPosts', posts);
+            },
+            addPost(vuexContext, post) {
+                const createdPost = { ...post, updatedDate: new Date()}
+                return axios
+                .post("https://nuxt-blog-9bc00-default-rtdb.firebaseio.com/posts.json", createdPost)
+                .then(result => {
+                    vuexContext.commit('addPost', { ...createdPost, id: result.data.name })
+                })
+                .catch((e) => console.log(e));
+            },
+            editPost(vuexContext, editedPost) {
+                return axios.put(`https://nuxt-blog-9bc00-default-rtdb.firebaseio.com/posts/${editedPost.id}.json`, editedPost)
+                .then(result => {
+                    vuexContext.commit('editPost', editedPost);
+                })
+                .catch(e => console.log(e))
             }
         },
         getters: {

@@ -19,27 +19,15 @@
   </div>
 </template>
 <script>
+import axios from 'axios';
 export default {
   asyncData(context) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({
-          loadedPost: {
-            id: "1",
-            author: "Arvin Waghmare",
-            updatedDate: new Date(),
-            title: `Amazing post! First (ID: ${context.route.params.id})`,
-            previewText: "Super amazing! thanks - First",
-          },
-        });
-      }, 1000);
+    return axios.get(`https://nuxt-blog-9bc00-default-rtdb.firebaseio.com/posts/${context.params.id}.json`)
+    .then(res => {
+      return {
+        loadedPost: res.data
+      }
     })
-    .then((data) => {
-      return data;
-    })
-    .catch((e) => {
-      context.error(e);
-    });
   },
 };
 </script>
