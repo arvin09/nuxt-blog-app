@@ -15,10 +15,13 @@ export default {
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
+    '~assets/styles/main.css'
   ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
+    '~plugins/global-components.js',
+    '~plugins/date-filter.js'
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -26,13 +29,31 @@ export default {
 
   // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
   buildModules: [
+
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
+    '@nuxtjs/axios'
   ],
+
+  axios: {
+    baseURL: process.env.BASE_URL || 'https://nuxt-blog-9bc00-default-rtdb.firebaseio.com',
+    credentials: false
+  },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
-  }
+  },
+  // setting environment variables
+  env: {
+    baseURL: process.env.BASE_URL || 'https://nuxt-blog-9bc00-default-rtdb.firebaseio.com'
+  },
+  
+  transition: {
+    name: 'fade',
+    mode: 'out-in'
+  },
+
+  loading: {color: '#fa932f', height: '5px', duration: 5000 }
 }
