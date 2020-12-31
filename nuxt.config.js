@@ -1,3 +1,4 @@
+const bodyParser = require('body-parser');
 export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
@@ -56,5 +57,10 @@ export default {
     mode: 'out-in'
   },
 
-  loading: {color: '#fa932f', height: '5px', duration: 5000 }
+  loading: {color: '#fa932f', height: '5px', duration: 5000 },
+
+  serverMiddleware: [
+    bodyParser.json(),
+    '~/api'
+  ]
 }
