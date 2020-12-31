@@ -47,7 +47,8 @@ export default {
   },
   // setting environment variables
   env: {
-    baseURL: process.env.BASE_URL || 'https://nuxt-blog-9bc00-default-rtdb.firebaseio.com'
+    baseURL: process.env.BASE_URL || 'https://nuxt-blog-9bc00-default-rtdb.firebaseio.com',
+    fbAPIKey: 'AIzaSyBDByaCdsNJQxxrWyVkXUKEHzFXKaZwUsE'
   },
   
   transition: {
