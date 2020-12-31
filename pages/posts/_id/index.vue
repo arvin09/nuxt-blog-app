@@ -22,6 +22,12 @@
 import axios from 'axios';
 export default {
   asyncData(context) {
+    // THIS IS FOR GENERATING FILES
+    if (context.payload) {
+      return {
+        loadedPost: context.payload.postData
+      }
+    }
     return context.app.$axios
     .$get(`/posts/${context.params.id}.json`)
     .then(data => {
